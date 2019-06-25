@@ -33,12 +33,28 @@ var vm = new Vue({
         },
         // 表单提交
         on_submit: function(){
+            var url = this.host + meiduo_admin/authorizations/
             this.check_username();
             this.check_pwd();
 
             if (this.error_username == true || this.error_pwd == true) {
                 // 不满足登录条件：禁用表单
 				window.event.returnValue = false
+
+            axios.post(url)
+            .then(response => {
+                // 记录用户的登录状态
+                sessionStorage.clear();
+                localStorage.clear();
+                localStorage.token = response.data.token;
+                localStorage.username = response.data.username;
+                localStorage.user_id = response.data.id;
+                location.href = '/index.html';
+            })
+            .catch(error=>{
+                console.log(error.response)
+            })
+
             }
         },
         // qq登录
