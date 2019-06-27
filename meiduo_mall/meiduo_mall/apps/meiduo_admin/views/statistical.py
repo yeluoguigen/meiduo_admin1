@@ -16,7 +16,7 @@ class UserTotalCountView(APIView):
         #获取当前日期
         now_date = date.today()
         #获取所有用户
-        count = User.objects.all().count()
+        count = User.objects.filter(is_staff=False).count()
         return Response({
             'count':count,
             'date': now_date
@@ -32,7 +32,7 @@ class UserDayCountView(APIView):
         #获取当前日期
         now_date = date.today()
         #获取当日注册用户
-        count = User.objects.filter(date_joined__gte=now_date).count()
+        count = User.objects.filter(is_staff=False,date_joined__gte=now_date).count()
         return Response({
             'count':count,
             'date': now_date
@@ -46,7 +46,7 @@ class UserActiveCountView(APIView):
         #获取当日日期
         now_date = date.today()
         #获取当天登录人数
-        count = User.objects.filter(last_login__gte=now_date).count()
+        count = User.objects.filter(is_staff=False,last_login__gte=now_date).count()
         return Response({
             'count':count,
             'date': now_date
@@ -59,9 +59,11 @@ class UserOrderCountView(APIView):
     def get(self,request):
         #获取当日日期
         now_date = date.today()
-        #获取当日订单创建时间
-        users = User.objects.filter(orders__create_time__gte=now_date)
+        #获取当天下单用户总数（普通用户）关联过滤查询，以订单表的数据当作查询用户表的条件
+        users = User.objects.filter(is_staff=False,orders__create_time__gte=now_date)
+        #强制类型转换去重
         user = set(users)
+        #得到用户数量
         count = len(user)
         return Response({
             'count':count,
@@ -82,7 +84,7 @@ class UserMonthCountView(APIView):
             index_date = start_date + timedelta(days=i)
             #指定下一天日期
             cur_date = start_date + timedelta(days=i+1)
-            count = User.objects.filter(date_joined__gte=index_date,date_joined__lt=cur_date).count()
+            count = User.objects.filter(is_staff=False, date_joined__gte=index_date,date_joined__lt=cur_date).count()
             date_list.append({
                 'count': count,
                 'date': index_date

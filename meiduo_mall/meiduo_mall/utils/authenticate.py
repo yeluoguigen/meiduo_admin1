@@ -7,8 +7,10 @@ from users.models import User
 
 class MeiduoModelBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        #判断是否通过vue组件发送请求
+        # 判断前台还是后台发的请求
+        #或者通过获取请求的路径判断request.path
         if request is None:
+            #后台
             try:
                 user = User.objects.get(username=username,is_staff=True)
             except:
@@ -17,6 +19,7 @@ class MeiduoModelBackend(ModelBackend):
                 return user
 
         else:
+            #前台请求
             try:
                 # if re.match(r'^1[3-9]\d{9}$', username):
                 #     user = User.objects.get(mobile=username)
