@@ -8,7 +8,7 @@ class SpecSerializer(serializers.ModelSerializer):
     商品规格表序列化器
     '''
     spu = serializers.StringRelatedField(read_only=True)
-    spu_id = serializers.IntegerField
+    spu_id = serializers.IntegerField()
     class Meta:
         model = SPUSpecification
         fields = ['id','name','spu','spu_id']

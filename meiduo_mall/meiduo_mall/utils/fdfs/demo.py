@@ -11,7 +11,7 @@ if __name__ == '__main__':
 '''
 mysql -h127.0.0.1 -uroot -pmysql meiduo_tbd39 < goods_data.sql
 {
-    'Storage IP': '192.168.47.128',
+    'Storage IP': '192.168.229.132',
     'Group name': 'group1',
     'Uploaded size': '8.00KB',
     'Status': 'Upload successed.',
