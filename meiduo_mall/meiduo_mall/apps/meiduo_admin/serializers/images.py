@@ -40,6 +40,23 @@ class ImageSerializer(serializers.ModelSerializer):
         #返回图片表对象
         return image
 
+    def update(self, instance, validated_data):
+        #获取保存的图片数据
+        image_data = validated_data.get('image')
+        #建立FastDFS的连接对象
+        client = Fdfs_client(settings.FASTDFS_CONF)
+        #上传图片数据
+        res = client.upload_by_buffer(image_data.read())
+        #判断上传状态
+        if res['Status'] != 'Upload successed.':
+            return serializers.ValidationError('图片上传失败')
+        #上传成功
+        image_url = res['Remote file_id']
+        #更新图片路径
+        instance.image=image_url
+        instance.save()
+        return instance
+
 
 
 #1 增加图片sku序列化器
