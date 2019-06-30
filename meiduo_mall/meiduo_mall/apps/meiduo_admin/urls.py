@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 
-from meiduo_admin.views import statistical, users, specs, images, skus, options, spus
+from meiduo_admin.views import statistical, users, specs, images, skus, options, spus, orders
 
 urlpatterns = [
     #登录路由
@@ -66,6 +66,12 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('goods',spus.SPUGoodsView,base_name='good')
 urlpatterns += router.urls
+
+#---------------------------订单表管理-------------------------
+router = DefaultRouter()
+router.register('orders',orders.OrderView,base_name='order')
+urlpatterns += router.urls
+
 
 
 
