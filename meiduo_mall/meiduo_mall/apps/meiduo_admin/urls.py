@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 
-from meiduo_admin.views import statistical, users, specs, images, skus, options
+from meiduo_admin.views import statistical, users, specs, images, skus, options, spus
 
 urlpatterns = [
     #登录路由
@@ -34,6 +34,12 @@ urlpatterns = [
     url(r'goods/(?P<pk>\d+)/specs/$',skus.SkuView.as_view({'get':'specs'})),
     #spec表名称
     url(r'^goods/specs/simple/$', options.OptionsView.as_view({'get': 'simple'})),
+    #spu品牌名称 id
+    url(r'^goods/brands/simple/$', spus.SPUGoodsView.as_view({'get': 'brand'})),
+
+    url(r'^goods/channel/categories/$', spus.SPUGoodsView.as_view({'get': 'channel'})),
+
+    url(r'^goods/channel/categories/(?P<pk>\d+)/$', spus.SPUGoodsView.as_view({'get': 'channels'})),
 
 ]
 #---------------------------商品图片表管理---------------------------
@@ -56,6 +62,10 @@ router = DefaultRouter()
 router.register('specs/options',options.OptionsView,base_name='option')
 urlpatterns += router.urls
 
+#---------------------------SPU表管理-------------------------
+router = DefaultRouter()
+router.register('goods',spus.SPUGoodsView,base_name='good')
+urlpatterns += router.urls
 
 
 
