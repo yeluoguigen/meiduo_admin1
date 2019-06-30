@@ -1,15 +1,12 @@
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.response import Response
-
 from goods.models import SKU, SKUSpecification, GoodsCategory, SpecificationOption, SPUSpecification
-
-
 
 
 class SKUSpecificationSerialzier(serializers.ModelSerializer):
     '''
-    SKU规格表Id
+    SKU具体规格选项序列化器
     '''
     spec_id =serializers.IntegerField(read_only=True)
     option_id = serializers.IntegerField(read_only=True)
@@ -17,11 +14,11 @@ class SKUSpecificationSerialzier(serializers.ModelSerializer):
         model = SKUSpecification
         fields = ['spec_id','option_id']
 
-class SKUGoodsSerializer(serializers.ModelSerializer):
+class SKUSerializer(serializers.ModelSerializer):
     '''
     获取SKU详细信息的序列化器
     '''
-    #指定所关联的选项信息，关联嵌套返回
+    #指定所关联的具体规格表数据
     specs = SKUSpecificationSerialzier(many=True)
     #指定分类信息
     category_id = serializers.IntegerField()
@@ -60,12 +57,7 @@ class SKUGoodsSerializer(serializers.ModelSerializer):
                 transaction.savepoint_commit(sid)
                 return Response({})
 
-
-
-
-
-
-class SKUCategorieSerializer(serializers.ModelSerializer):
+class GoodsCategorieSerializer(serializers.ModelSerializer):
     '''
     商品分类序列化器
     '''
@@ -81,7 +73,7 @@ class SPUSimpleSerializer(serializers.ModelSerializer):
         model = GoodsCategory
         fields =[ 'name','id']
 
-class SPUOptineSerializer(serializers.ModelSerializer):
+class OptionSerializer(serializers.ModelSerializer):
     '''
     spu商品规格选项序列化器
     '''
@@ -89,7 +81,7 @@ class SPUOptineSerializer(serializers.ModelSerializer):
         model = SpecificationOption
         fields = ['id','value']
 
-class SPUSpecSerialzier(serializers.ModelSerializer):
+class SPUSpecificationSerialzier(serializers.ModelSerializer):
     '''
     规格序列化器
     '''
@@ -97,10 +89,11 @@ class SPUSpecSerialzier(serializers.ModelSerializer):
     spu = serializers.StringRelatedField(read_only=True)
     spu_id = serializers.IntegerField()
     #关联序列化返回选项信息
-    options = SPUOptineSerializer(read_only=True,many=True)
+    options = OptionSerializer(many=True)
     class Meta:
         model = SPUSpecification
         fields = '__all__'
+
 
 
 

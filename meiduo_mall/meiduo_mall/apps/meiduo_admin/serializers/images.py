@@ -66,3 +66,4 @@ class SkuSerializer(serializers.ModelSerializer):
 
         model = SKU
         fields = ['id','name']
+

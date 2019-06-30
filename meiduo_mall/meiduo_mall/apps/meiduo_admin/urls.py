@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 
-from meiduo_admin.views import statistical, users, specs, images, skus
+from meiduo_admin.views import statistical, users, specs, images, skus, options
 
 urlpatterns = [
     #登录路由
@@ -24,19 +24,16 @@ urlpatterns = [
     #用户查询
     url(r'^users/$', users.UserView.as_view()),
 
-
-    # 规格选项表的增删改查
-    # url(r'^goods/simple/$', specs.SpecView.as_view({'get':'simple'})),
-
     #商品图片表管理
     url(r'^skus/simple/$', images.ImageView.as_view({'get': 'simple'})),
-    #商品三级分类
-    url(r'^skus/categories/$', skus.SKUCategorieView.as_view()),
-    #spu表名称
-    url(r'^goods/simple/$', skus.SPUSimpleView.as_view()),
 
-    #spu商品规格信息
-    url(r'goods/(?P<pk>\d+)/specs/$',skus.SPUSpecView.as_view()),
+    #spu表名称
+    url(r'^goods/simple/$', specs.SpecView.as_view({'get':'simple'})),
+
+    # ------------------sku表管理------------------
+    url(r'goods/(?P<pk>\d+)/specs/$',skus.SkuView.as_view({'get':'specs'})),
+    #spec表名称
+    url(r'^goods/specs/simple/$', options.OptionsView.as_view({'get': 'simple'})),
 
 ]
 #---------------------------商品图片表管理---------------------------
@@ -44,7 +41,7 @@ router = DefaultRouter()
 router.register('skus/images',images.ImageView,base_name='image')
 urlpatterns += router.urls
 
-#---------------------------SKU表的增删改查--------------------------
+#---------------------------SKU表管理-------------------------
 router = DefaultRouter()
 router.register('skus',skus.SkuView,base_name='sku')
 urlpatterns += router.urls
@@ -53,6 +50,12 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('goods/specs',specs.SpecView,base_name='spec')
 urlpatterns += router.urls
+
+#--------------------------规格选项管理----------------------------------
+router = DefaultRouter()
+router.register('specs/options',options.OptionsView,base_name='option')
+urlpatterns += router.urls
+
 
 
 
