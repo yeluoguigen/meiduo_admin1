@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
-class PerssionSerializer(serializers.ModelSerializer):
+class PermissionSerializer(serializers.ModelSerializer):
     '''
     权限表序列化器
     '''

@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from meiduo_admin.serializers.permission import PerssionSerializer, ContentTypeSerializer
+from meiduo_admin.serializers.permission import PermissionSerializer, ContentTypeSerializer
 from meiduo_admin.utils import PageNum
 
 
@@ -11,7 +11,7 @@ class PermissionView(ModelViewSet):
     '''
     权限表的增删改查
     '''
-    serializer_class = PerssionSerializer
+    serializer_class = PermissionSerializer
     queryset = Permission.objects.all()
     pagination_class = PageNum
     permission_classes = [IsAdminUser]

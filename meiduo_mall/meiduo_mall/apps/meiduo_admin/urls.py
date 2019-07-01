@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 
-from meiduo_admin.views import statistical, users, specs, images, skus, options, spus, orders, permission
+from meiduo_admin.views import statistical, users, specs, images, skus, options, spus, orders, permission, groups
 
 urlpatterns = [
     #登录路由
@@ -42,6 +42,8 @@ urlpatterns = [
     url(r'^goods/channel/categories/(?P<pk>\d+)/$', spus.SPUGoodsView.as_view({'get': 'channels'})),
     #权限类型
     url(r'^permission/content_types/$', permission.PermissionView.as_view({'get': 'content_types'})),
+    #获取所有权限
+    url(r'^permission/simple/$', groups.GroupView.as_view({'get': 'simple'})),
 
 ]
 #---------------------------商品图片表管理---------------------------
@@ -79,6 +81,10 @@ router = DefaultRouter()
 router.register('permission/perms',permission.PermissionView,base_name='permission')
 urlpatterns += router.urls
 
+#---------------------------用户组表管理-------------------------
+router = DefaultRouter()
+router.register('permission/groups',groups.GroupView,base_name='group')
+urlpatterns += router.urls
 
 
 
