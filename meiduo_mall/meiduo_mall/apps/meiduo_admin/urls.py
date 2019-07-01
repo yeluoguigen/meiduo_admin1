@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 
-from meiduo_admin.views import statistical, users, specs, images, skus, options, spus, orders, permission, groups
+from meiduo_admin.views import statistical, users, specs, images, skus, options, spus, orders, permission, groups, \
+    admins
 
 urlpatterns = [
     #登录路由
@@ -44,6 +45,8 @@ urlpatterns = [
     url(r'^permission/content_types/$', permission.PermissionView.as_view({'get': 'content_types'})),
     #获取所有权限
     url(r'^permission/simple/$', groups.GroupView.as_view({'get': 'simple'})),
+
+    url(r'^permission/groups/simple/$', admins.AdminView.as_view({'get': 'simple'})),
 
 ]
 #---------------------------商品图片表管理---------------------------
@@ -86,6 +89,11 @@ router = DefaultRouter()
 router.register('permission/groups',groups.GroupView,base_name='group')
 urlpatterns += router.urls
 
+
+#---------------------------管理员表管理-------------------------
+router = DefaultRouter()
+router.register('permission/admins',admins.AdminView,base_name='admin')
+urlpatterns += router.urls
 
 
 
